@@ -3,7 +3,7 @@ import allData from './data'
 class Database {
   constructor() {}
 
-  async getAll():Promise<TProduct[]> {
+  async getAll(): Promise<TProduct[]> {
     const asArray = Object.values(allData)
     await randomDelay()
     return asArray
@@ -20,7 +20,7 @@ class Database {
   }
 }
 
-// Let's also add a delay to make it a bit closer to reality
+// Add a delay to make it a bit closer to reality
 const randomDelay = () =>
   new Promise((resolve) => {
     const max = 350

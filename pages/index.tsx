@@ -1,23 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react'
+import fetch from 'isomorphic-unfetch'
+import Layout from '@components/Layout/Layout'
+import Header from '@components/Header/Header'
+import ProductList from '@components/ProductList/ProductList'
 
-const Home = () => {
-  const [productList, setProductList] = useState<TProduct[]>([]);
+export const getServerSideProps = async () => {
+  const response = await fetch('http://localhost:3000/api/avo')
+  const { data }: TAPIAvoResponse = await response.json()
 
-  useEffect(() => {
-    window.fetch('api/avo')
-      .then(res => res.json())
-      .then(({data}) => {setProductList(data)});
-  }, [])
+  return {
+    props: {
+      productList: data,
+    },
+  }
+}
 
-
-
+const HomePage = ({ productList }: { productList: TProduct[] }) => {
   return (
-    <div>
-      {productList.map((product) => {
-        return <p key={product.id}>{product.name}</p>
-      })}
-    </div>
-  );
-};
+    <Layout>
+      <Header />
+      <ProductList products={productList} />
+      <style jsx>{`
+        section {
+          text-align: center;
+          margin-bottom: 2rem;
+        }
+      `}</style>
+    </Layout>
+  )
+}
 
-export default Home;
+export default HomePage
